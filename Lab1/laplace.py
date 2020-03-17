@@ -7,10 +7,12 @@ import matplotlib.pyplot as plt
 sizes = [10, 50, 1000]
 n_plots = len(sizes)
 n_points = 100
+seed = 102
 
 # distribution PARAMETERS
 alpha = 1 / math.sqrt(2)
 beta = 0
+np.random.seed(seed)
 
 # left and right borders are calculated to satisfy:
 # pdf(x) <= 0.1, when x > r_border or x < l_border
@@ -44,4 +46,6 @@ for i in range(0, n_plots):
     print(str(min(values_rnd)) + ' ' + str(max(values_rnd)))
     bins_rnd = np.arange(min(values_rnd), max(values_rnd) + width, width)
     plt.hist(x=values_rnd, bins=bins_rnd, color='lightsteelblue', density=True)
+
+plt.savefig("..\Documentation\Lab1\laplace.png")
 plt.show()

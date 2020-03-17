@@ -7,10 +7,12 @@ import matplotlib.pyplot as plt
 sizes = [10, 50, 1000]
 n_plots = len(sizes)
 n_points = 500 # more points is better because pdf is discontinuous function
+seed = 102
 
 # distribution PARAMETERS
 a = -math.sqrt(3)
 b = math.sqrt(3)
+np.random.seed(seed)
 
 # borders are determined by an interval of uniform distribution
 l_border = 1.5 * a
@@ -42,4 +44,5 @@ for i in range(0, n_plots):
     bins_rnd = np.arange(min(values_rnd), max(values_rnd) + width, width)
     plt.hist(x=values_rnd, bins=bins_rnd, color='lightsteelblue', density=True)
 
+plt.savefig("..\Documentation\Lab1\\uniform.png")
 plt.show()

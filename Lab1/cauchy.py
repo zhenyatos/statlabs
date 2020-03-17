@@ -7,10 +7,12 @@ import matplotlib.pyplot as plt
 sizes = [10, 50, 1000]
 n_plots = len(sizes)
 n_points = 100
+seed = 102
 
 # distribution PARAMETERS
 x0 = 0
 hamma = 1
+np.random.seed(seed)
 
 # left and right borders was determined
 # experimentally, so TODO: add mutable l-r_borders
@@ -43,4 +45,5 @@ for i in range(0, n_plots):
     bins_rnd = np.arange(min(values_rnd), max(values_rnd) + width, width)
     plt.hist(x=values_rnd, bins=bins_rnd, color='lightsteelblue', density=True)
 
+plt.savefig("..\Documentation\Lab1\cauchy.png")
 plt.show()

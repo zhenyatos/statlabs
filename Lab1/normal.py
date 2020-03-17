@@ -7,10 +7,12 @@ import matplotlib.pyplot as plt
 sizes = [10, 50, 1000]
 n_plots = len(sizes)
 n_points = 100
+seed = 102
 
 # distribution PARAMETERS
 mu = 0
 sigma = 1
+np.random.seed(seed)
 
 # borders are calculated using 3-sigma rule and pdf maximum value
 l_border = mu - 3 * sigma
@@ -42,4 +44,5 @@ for i in range(0, n_plots):
     bins_rnd = np.arange(min(values_rnd), max(values_rnd) + width, width)
     plt.hist(x=values_rnd, bins=bins_rnd, color='lightsteelblue', density=True)
 
+plt.savefig("..\Documentation\Lab1\\normal.png")
 plt.show()
