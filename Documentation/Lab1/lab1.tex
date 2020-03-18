@@ -57,6 +57,7 @@
 \end{titlepage}
 
 \tableofcontents
+\listoffigures
 \pagebreak
 
 \section{Постановка задачи}
@@ -94,24 +95,33 @@
 
 \begin{enumerate}
 	\item \textit{Нормальное} $N(x, 0, 1)$ - абсолютно непрерывное, задается плотностью
-	$$f_N(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
+	\begin{equation}
+	f_N(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
+	\end{equation}
 	
 	\item \textit{Коши} $C(x, 0, 1)$ - абсолютно непрерывное, задается плотностью
-	$$f_C(x)=\frac{1}{\pi(x^2+1)}$$
+	\begin{equation}
+	f_C(x)=\frac{1}{\pi(x^2+1)}
+	\end{equation}
 	
 	\item \textit{Лапласа} $L(x, 0, \frac{1}{\sqrt{2}})$ - абсолютно непрерывное, задается плотностью
-	$$f_L(x)=\frac{1}{2\sqrt{2}}e^{-\frac{1}{\sqrt{2}}|x|}$$
+	\begin{equation}
+	f_L(x)=\frac{1}{2\sqrt{2}}e^{-\frac{1}{\sqrt{2}}|x|}
+	\end{equation}
 	
-	\item \textit{Пуассона} $P(k, 10)$ - дискретное, задается на $\{1, 2, ..., k, ...\}$ как $$p(k)=\frac{10^k}{k!}e^{-10}$$ 
+	\item \textit{Пуассона} $P(k, 10)$ - дискретное, задается на $\{1, 2, ..., k, ...\}$ как
+	\begin{equation}
+	p(k)=\frac{10^k}{k!}e^{-10}
+	\end{equation} 
 	
 	\item \textit{Равномерное} $U(x, -\sqrt{3}, \sqrt{3})$ - абсолютно непрерывное, задается плотностью 
-	\begin{equation*}
+	\begin{equation}
 	f_U(x) = 
 	\begin{cases}
 	\frac{1}{2\sqrt{3}} &\text{если $x \in \mathopen[-\sqrt{3}, \sqrt{3}\mathclose] $}\\
 	0 &\text{иначе}
 	\end{cases}
-	\end{equation*}	
+	\end{equation}	
 \end{enumerate}
 
 \subsection{Гистограмма}
