@@ -1,0 +1,165 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{systeme}
+\usepackage{hyperref}
+\usepackage{url}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}		
+		\vfill	
+		Санкт-Петербургский политехнический университет \\
+		Петра Великого\\
+		\vskip 1cm
+		Институт прикладной математики и механики \\
+		Кафедра «Прикладная математика»
+		\vfill
+		\textbf{Отчёт\\
+			по лабораторной работе №1\\
+			по дисциплине\\
+			«Математическая статистика»\\}
+		\vfill
+	\end{center}
+	\vfill
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		Выполнил студент:\\
+		Самутичев Евгений Романович\\
+		группа: 3630102/70201\\
+	\end{minipage}
+	\vfill
+	\hfill 
+	\begin{minipage}{0.4\textwidth}
+		Проверил:\\
+		к.ф.-м.н., доцент\\
+		Баженов Александр Николаевич\
+	\end{minipage}
+	\vfill
+	\begin{center}
+		Санкт-Петербург\\2020 г.
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\pagebreak
+
+\section{Постановка задачи}
+Для каждого из 5 распределений:
+
+\begin{enumerate}
+	\item Нормального $N(x, 0, 1)$
+	\item Коши $C(x, 0, 1)$
+	\item Лапласа $L(x, 0, \frac{1}{\sqrt{2}})$
+	\item Пуассона $P(k, 10)$
+	\item Равномерного $U(x, -\sqrt{3}, \sqrt{3})$	
+\end{enumerate}
+
+выборку размера: 10, 100, 1000 - сгенерировать 1000 раз, для каждой генерации произвести вычисления выборочных характеристик $\bar x, \text{med }x, z_R, z_Q, z_{tr}$ для всех генераций в рамках одного размера выборки получить значения среднего характеристик положения:
+\begin{equation}
+E(z) = \bar z
+\end{equation}
+и оценку дисперсии:
+\begin{equation}
+D(z) = \bar {z^2} - {\bar z}^2
+\end{equation}
+Представить полученные данные в виде таблиц.
+\pagebreak
+
+\section{Теория}
+\subsection{Вариационный ряд}
+Если элементы выборки $x_1, ..., x_n$ упорядочить по возрастанию на каждом элементарном исходе (рассматриваем их как случайные величины), получится новый набор случайный величин, называемый \textit{вариационным рядом}:
+$$x_{(1)} \leq ... \leq x_{(n)}$$ Элемент $x_{(k)}$ называется \textit{k-ой порядковой статистикой}.
+
+\subsection{Выборочные характеристики}
+При работе с выборкой нам неизвестно распределение по которому она получена, а значит и соответствующие характеристики распределения. Однако, существуют оценки - т.н. \textit{выборочные характеристики}:
+
+\begin{itemize}
+	\item Выборочное среднее
+	\begin{equation}
+		\bar x = \frac{1}{n}\sum_{i=1}^{n}{x_i}
+	\end{equation}
+	
+	\item Выборочная медиана
+	\begin{equation}
+		\text{med }x = 
+		\begin{cases}
+			x_{(k+1)} &\text{при $n=2k+1$}\\
+			\frac{x_{(k)} + x_{(k+1)}}{2} &\text{при $n=2k$}
+		\end{cases}
+	\end{equation}
+	
+	\item Полусумма экстремальных выборочных элементов
+	\begin{equation}
+		z_R = \frac{x_{(1)} + x_{(n)}}{2}
+	\end{equation}
+	
+	\item Выборочный квантиль уровня $\alpha$
+	\begin{equation}
+		z_{\alpha} = \frac{x_{(\lfloor q \rfloor+1)} +
+							x_{(\lceil q \rceil+1)}}{2}, \text{где } q=(n-1)\alpha
+	\end{equation}
+	формула, используемая в \textbf{NumPy}, в этом случае $z_0 = \min\limits_{i=1,...,n}x_{(i)}, z_1 = \max\limits_{i=1,...,n}x_{(i)},
+	\newline z_{0.5} = \text{med} \hspace{2pt} x$
+	
+	\item Полусумма квантилей
+	\begin{equation}
+		z_Q = \frac{z_{0.25} + z_{0.75}}{2}
+	\end{equation}
+	
+	\item Усеченное среднее
+	\begin{equation}
+		z_{tr} = \frac{1}{n-2r}\sum_{i=r+1}^{n-r}x_{(i)}
+	\end{equation}
+\end{itemize}
+	
+	Выборочные характеристики являются случайными величинами, поэтому в работе и производится усреднение их значений для 1000 генераций и вычисление среднеквадратичного отклонения.
+
+\pagebreak
+
+\section{Реализация}
+Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
+
+\begin{itemize}
+	\item \textbf{NumPy} - построение вариационного ряда и вычисления
+	\item \textbf{SciPy} - модуль \textbf{stats} для генерации данных по распределениям
+\end{itemize}
+
+Исходный код работы приведен в приложении. 
+\pagebreak
+
+\section{Результаты}
+
+\pagebreak
+
+\section{Обсуждение}
+
+\pagebreak
+
+\section{Приложения}
+\noindent 1. Исходный код лабораторной {\url{https://github.com/zhenyatos/statlabs/tree/master/Lab2}}
+
+\begin{thebibliography}{9} 
+	\addcontentsline{toc}{section}{Список литературы}
+	\bibitem{shiryaev} А. Н. Ширяев, \emph{Вероятность-1}. Изд. МЦНМО, Москва, 2017. 551 стр. 
+	
+	\bibitem{chernova} Н. И. Чернова, \emph{Математическая статистика: Учеб. пособие}. Новосиб. гос. ун-т. Новосибирск, 2007. 148 стр.
+\end{thebibliography}
+
+\end{document}

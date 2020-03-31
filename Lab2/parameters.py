@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 def median(values):
@@ -17,12 +18,8 @@ def z_R(values):
     return (values[0] + values[len(values) - 1]) / 2
 
 
-def quartile(values, p):
-    return values[math.ceil(len(values) * p)]
-
-
 def z_Q(values):
-    return (quartile(values, 1 / 4) + quartile(values, 3 / 4)) / 2
+    return (np.quantile(values, 1 / 4) + np.quantile(values, 3 / 4)) / 2
 
 
 def z_tr(values):
