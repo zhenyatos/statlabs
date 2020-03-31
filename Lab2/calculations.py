@@ -7,6 +7,8 @@ import Lab2.parameters as param
 sizes = [10, 100, 1000]
 n_tests = len(sizes)
 n_calc = 1000
+n_digits = 6
+file = open('table.txt', 'w')
 
 # distribution PARAMETERS
 distrs = ["Normal", "Cauchy", "Laplace", "Poisson", "Uniform"]
@@ -48,8 +50,8 @@ z_Q_data = np.zeros(n_calc)
 z_tr_data = np.zeros(n_calc)
 
 for k in range(0, n_distr):
-    print(distrs[k] + ":")
-    print("")
+    print(distrs[k] + ":", file=file)
+    print("", file=file)
     for i in range(0, n_tests):
         for j in range(0, n_calc):
             values = gen_values(distrs[k], sizes[i])
@@ -57,14 +59,25 @@ for k in range(0, n_distr):
 
             average_data[j] = param.average(values)
             median_data[j] = param.median(values)
-            z_R_data[j] = param.median(values)
+            z_R_data[j] = param.z_R(values)
             z_Q_data[j] = param.z_Q(values)
             z_tr_data[j] = param.z_tr(values)
 
-        print("With " + str(sizes[i]) + ":")
-        print("average: " + str(param.average(average_data)))
-        print("median: " + str(param.average(median_data)))
-        print("zR: " + str(param.average(z_R_data)))
-        print("zQ: " + str(param.average(z_Q_data)))
-        print("ztr: " + str(param.average(z_tr_data)))
-        print("")
+        # generating LaTeX table code
+        S = "$n=" + str(sizes[i]) + "$&&&&&" + " \\\ \hline"
+        S += "$E(z)$" + "&" + str(round(param.average(average_data), 6)) +\
+            "&" + str(round(param.average(median_data), 6)) +\
+            "&" + str(round(param.average(z_R_data), 6)) +\
+            "&" + str(round(param.average(z_Q_data), 6)) +\
+            "&" + str(round(param.average(z_tr_data), 6)) +\
+            " \\\ \hline"
+        S += "$D(z)$" + "&" + str(round(param.variance(average_data), 6)) +\
+            "&" + str(round(param.variance(median_data), 6)) +\
+            "&" + str(round(param.variance(z_R_data), 6)) +\
+            "&" + str(round(param.variance(z_Q_data), 6)) +\
+            "&" + str(round(param.variance(z_tr_data), 6)) + \
+            " \\\ \hline"
+        print(S, file=file)
+        print("", file=file)
+
+file.close()

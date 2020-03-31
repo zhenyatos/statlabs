@@ -10,3 +10,6 @@ Documentation/Lab1/lab1.lof
 /Documentation/Lab2/lab2.out
 /Documentation/Lab2/lab2.synctex.gz
 /Documentation/Lab2/lab2.toc
+Documentation/Lab2/lab2.lot
+Lab2/__pycache__/parameters.cpython-37.pyc
+Lab2/table.txt

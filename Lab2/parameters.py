@@ -14,6 +14,11 @@ def average(values):
     return sum(values) / len(values)
 
 
+def variance(values):
+    E = average(values)
+    return average(values * values) - E * E
+
+
 def z_R(values):
     return (values[0] + values[len(values) - 1]) / 2
 
