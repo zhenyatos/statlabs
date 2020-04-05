@@ -64,18 +64,23 @@ for k in range(0, n_distr):
             z_tr_data[j] = param.z_tr(values)
 
         # generating LaTeX table code
+        vrnc_average = param.variance(average_data)
+        vrnc_median = param.variance(median_data)
+        vrnc_z_R = param.variance(z_R_data)
+        vrnc_z_Q = param.variance(z_Q_data)
+        vrnc_z_tr = param.variance(z_tr_data)
         S = "$n=" + str(sizes[i]) + "$&&&&&" + " \\\ \hline"
-        S += "$E(z)$" + "&" + str(round(param.average(average_data), 6)) +\
-            "&" + str(round(param.average(median_data), 6)) +\
-            "&" + str(round(param.average(z_R_data), 6)) +\
-            "&" + str(round(param.average(z_Q_data), 6)) +\
-            "&" + str(round(param.average(z_tr_data), 6)) +\
+        S += "$E(z)$" + "&" + str(round(param.average(average_data), param.correct_digits(vrnc_average))) +\
+            "&" + str(round(param.average(median_data), param.correct_digits(vrnc_average))) +\
+            "&" + str(round(param.average(z_R_data), param.correct_digits(vrnc_z_R))) +\
+            "&" + str(round(param.average(z_Q_data), param.correct_digits(vrnc_z_Q))) +\
+            "&" + str(round(param.average(z_tr_data), param.correct_digits(vrnc_z_tr))) +\
             " \\\ \hline"
-        S += "$D(z)$" + "&" + str(round(param.variance(average_data), 6)) +\
-            "&" + str(round(param.variance(median_data), 6)) +\
-            "&" + str(round(param.variance(z_R_data), 6)) +\
-            "&" + str(round(param.variance(z_Q_data), 6)) +\
-            "&" + str(round(param.variance(z_tr_data), 6)) + \
+        S += "$D(z)$" + "&" + str(round(vrnc_average, 6)) +\
+            "&" + str(round(vrnc_median, 6)) +\
+            "&" + str(round(vrnc_z_R, 6)) +\
+            "&" + str(round(vrnc_z_Q, 6)) +\
+            "&" + str(round(vrnc_z_tr, 6)) + \
             " \\\ \hline"
         print(S, file=file)
         print("", file=file)

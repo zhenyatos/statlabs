@@ -32,3 +32,6 @@ def z_tr(values):
     r = math.ceil(n / 4)
     return sum(values[r:n-r-1]) / (n - 2 * r)
 
+
+def correct_digits(vrnc : float):
+    return max(0, math.ceil(-math.log10(abs(vrnc))))
