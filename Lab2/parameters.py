@@ -34,4 +34,4 @@ def z_tr(values):
 
 
 def correct_digits(vrnc : float):
-    return max(0, math.ceil(-math.log10(abs(vrnc))))
+    return max(0, round(-math.log10(abs(vrnc))))
