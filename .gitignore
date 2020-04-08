@@ -13,3 +13,8 @@ Documentation/Lab1/lab1.lof
 Documentation/Lab2/lab2.lot
 Lab2/__pycache__/parameters.cpython-37.pyc
 Lab2/table.txt
+/Documentation/Lab3/cauchy.png
+/Documentation/Lab3/laplace.png
+/Documentation/Lab3/normal.png
+/Documentation/Lab3/poisson.png
+/Documentation/Lab3/uniform.png
