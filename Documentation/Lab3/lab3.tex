@@ -1,0 +1,110 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{systeme}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[bottom]{footmisc}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}		
+		\vfill	
+		Санкт-Петербургский политехнический университет \\
+		Петра Великого\\
+		\vskip 1cm
+		Институт прикладной математики и механики \\
+		Кафедра «Прикладная математика»
+		\vfill
+		\textbf{Отчёт\\
+			по лабораторной работе №3\\
+			по дисциплине\\
+			«Математическая статистика»\\}
+		\vfill
+	\end{center}
+	\vfill
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		Выполнил студент:\\
+		Самутичев Евгений Романович\\
+		группа: 3630102/70201\\
+	\end{minipage}
+	\vfill
+	\hfill 
+	\begin{minipage}{0.4\textwidth}
+		Проверил:\\
+		к.ф.-м.н., доцент\\
+		Баженов Александр Николаевич\
+	\end{minipage}
+	\vfill
+	\begin{center}
+		Санкт-Петербург\\2020 г.
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoftables
+\pagebreak
+
+\section{Постановка задачи}
+Для каждого из 5 распределений:
+
+\begin{enumerate}
+	\item Нормального $N(x, 0, 1)$
+	\item Коши $C(x, 0, 1)$
+	\item Лапласа $L(x, 0, \frac{1}{\sqrt{2}})$
+	\item Пуассона $P(k, 10)$
+	\item Равномерного $U(x, -\sqrt{3}, \sqrt{3})$	
+\end{enumerate}
+
+сгенерировать
+\pagebreak
+
+\section{Теория}
+
+
+\pagebreak
+
+\section{Реализация}
+Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
+
+\begin{itemize}
+	\item \textbf{NumPy} - вычисление квартилей для дальнейшего подсчета выбросов
+	\item \textbf{SciPy} - модуль \textbf{stats} для генерации данных по распределениям
+	\item \textbf{Matplotlib} - построение боксплотов
+\end{itemize}
+
+Исходный код работы приведен в приложении. 
+\pagebreak
+
+\section{Результаты}
+
+\pagebreak
+
+\section{Обсуждение}
+	
+\pagebreak
+
+\section{Приложения}
+\noindent 1. Исходный код лабораторной {\url{https://github.com/zhenyatos/statlabs/tree/master/Lab3}}
+
+\begin{thebibliography}{9} 
+	\bibitem{chernova} Н. И. Чернова, \emph{Математическая статистика: Учеб. пособие}. Новосиб. гос. ун-т. Новосибирск, 2007. 148 стр.
+\end{thebibliography}
+
+\end{document}
