@@ -58,6 +58,7 @@
 \end{titlepage}
 
 \tableofcontents
+\listoffigures
 \listoftables
 \pagebreak
 
@@ -72,15 +73,36 @@
 	\item Равномерного $U(x, -\sqrt{3}, \sqrt{3})$	
 \end{enumerate}
 
-сгенерировать
+сгенерировать выборки размера 20 и 100, построить боксплот Тьюки. Определить долю выбросов экспериментально (сгенерировав выборку каждого размера 1000 раз) и сравнить с результатами полученными теоретически.
 \pagebreak
 
 \section{Теория}
+\subsection{Выбросы}
+Результат измерения, выделяющийся из выборки называется \textit{выбросом}. Простейший критерий основан на межквартильном расстоянии, выбросами считаются элементы выборки лежащие вне диапазона $[X_1, X_2]$:
+\begin{equation}\label{1}
+X_1=LQ - \frac{3}{2}(UQ-LQ), X_2=UQ + \frac{3}{2}(UQ-LQ)
+\end{equation}, где $LQ, UQ$ - выборочные нижний и верхний квартили.
 
+Теоретическая вероятность выбросов для непрерывных распределений:
+\begin{equation}\label{2}
+P_{outlier} = P(x<X_1) + P(x>X_2) = F(X_1) + (1 - F(X_2))
+\end{equation}
+, а для дискретных с учетом возможного скачка
+\begin{equation}\label{3}
+P_{outlier} = F(X_1) - (F(X_1+) - F(X_1)) + (1 - F(X_2))
+\end{equation}
+
+\subsection{Боксплот Тьюки}
+\subsubsection{Описание}
+\textit{Боксплот} (англ. box plot) — график, использующийся в описательной статистике, компактно изображающий одномерное распределение вероятностей: в удобной форме показывает медиану, нижний и верхний квартили, минимальное и максимальное значение выборки и выбросы.\cite{boxplot}
+
+\subsubsection{Построение}
+Границами ящика служат $LQ \text{ и } UQ$, линия в середине ящика — медиана. Концы усов — края статистически значимой выборки (без выбросов): $X_1 \text{ и } X_2 \text{ }\hyperref[1]{(1)}$.
 
 \pagebreak
 
 \section{Реализация}
+\label{sec:impl}
 Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
 
 \begin{itemize}
@@ -93,6 +115,62 @@
 \pagebreak
 
 \section{Результаты}
+\subsection{Боксплоты}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{normal.png}
+	\caption{Нормальное распределение}
+	\label{fig:image}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{cauchy.png}
+	\caption{Распределение Коши}
+	\label{fig:image}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{laplace.png}
+	\caption{Распределение Лапласа}
+	\label{fig:image}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{poisson.png}
+	\caption{Распределение Пуассона}
+	\label{fig:image}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{uniform.png}
+	\caption{Равномерное распределение}
+	\label{fig:image}
+\end{figure}
+\pagebreak
+
+\subsection{Теоретическая вероятность выбросов}
+Подсчитана для каждого распределения при помощи модуля {stats} библиотеки {SciPy} (см. \hyperref[sec:impl]{Реализация}):
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		Распределение&normal&cauchy&laplace&poisson&uniform  \\ \hline
+		$P_{outlier}\text{	} \hyperref[2]{(2)},\hyperref[3]{(3)}$
+		&0.007  &0.156  &0.0625  &0.008  &0.0  \\ \hline
+	\end{tabular}
+	\caption{Теоретическая вероятность выбросов}
+\end{table}
+
+\subsection{Доля выбросов}
 
 \pagebreak
 
@@ -105,6 +183,7 @@
 
 \begin{thebibliography}{9} 
 	\bibitem{chernova} Н. И. Чернова, \emph{Математическая статистика: Учеб. пособие}. Новосиб. гос. ун-т. Новосибирск, 2007. 148 стр.
+	\bibitem{boxplot} Ящик с усами // Википедия. [2020—2020]. Дата обновления: 12.01.2020. URL: \url{https://ru.wikipedia.org/?oldid=104502300} (дата обращения: 12.01.2020)
 \end{thebibliography}
 
 \end{document}

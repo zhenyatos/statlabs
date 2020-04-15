@@ -20,15 +20,15 @@ U_a = -math.sqrt(3)
 U_b = math.sqrt(3)
 
 
-def gen_values(distr_name, size):
+def tested_distr(distr_name):
     if distr_name == "normal":
-        return st.norm.rvs(N_mu, N_sigma, size=size)
+        return st.norm(N_mu, N_sigma)
     if distr_name == "cauchy":
-        return st.cauchy.rvs(loc=C_x0, scale=C_hamma, size=size)
+        return st.cauchy(loc=C_x0, scale=C_hamma)
     if distr_name == "laplace":
-        return st.laplace.rvs(loc=L_beta, scale=L_alpha, size=size)
+        return st.laplace(loc=L_beta, scale=L_alpha)
     if distr_name == "uniform":
-        return st.uniform.rvs(U_a, U_b - U_a, size=size)
+        return st.uniform(U_a, U_b - U_a)
     if distr_name == "poisson":
-        return st.poisson.rvs(P_lambda, size=size)
+        return st.poisson(P_lambda)
     return None

@@ -21,7 +21,7 @@ for k in range(0, sf.n_distr):
     print("", file=file)
     for i in range(0, n_tests):
         for j in range(0, n_calc):
-            values = sf.gen_values(sf.distrs[k], sizes[i])
+            values = sf.tested_distr(sf.distrs[k]).rvs(size=sizes[i])
             values = np.sort(values)
 
             average_data[j] = param.average(values)
