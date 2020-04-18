@@ -7,12 +7,12 @@ sizes = [20, 100]
 n_tests = len(sizes)
 n_calc = 1000
 whis = 1.5
-n_digits = 3
+n_digits = 6
 eps = 0.0000001
 
 for k in range(0, sf.n_distr):
     for j in range(0, n_tests):
-        n_outliers = 0
+        outliers = np.zeros(n_calc)
         for i in range(0, n_calc):
             values = sf.tested_distr(sf.distrs[k]).rvs(size=sizes[j])
             # calculating borders as LQ - whis * IQR, UQ + whis * IQR
@@ -24,9 +24,13 @@ for k in range(0, sf.n_distr):
             # test data for outliers
             for m in range(0, sizes[j]):
                 if values[m] < l or values[m] > r:
-                    n_outliers += 1
-        prob = n_outliers / (n_calc * sizes[j])  # outliers frequency
-        print(sf.distrs[k] + ", n=" + str(sizes[j]) + " : " + str(round(prob, n_digits)))
+                    outliers[i] += 1
+        outliers /= sizes[j]
+        prob = sum(outliers) / n_calc  # outliers frequency
+        disp = (1 / n_calc) * (sum(outliers * outliers)) - prob * prob
+        print(sf.distrs[k] + ", n=" + str(sizes[j]) + " :")
+        print("P = " + str(round(prob, n_digits)))
+        print("D = " + str(round(disp, n_digits)))
 
 print("")
 
