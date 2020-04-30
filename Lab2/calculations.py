@@ -16,12 +16,12 @@ z_R_data = np.zeros(n_calc)
 z_Q_data = np.zeros(n_calc)
 z_tr_data = np.zeros(n_calc)
 
-for k in range(0, sf.n_distr):
-    print(sf.distrs[k] + ":", file=file)
+for distr in sf.distrs:
+    print(distr['name'] + ":", file=file)
     print("", file=file)
     for i in range(0, n_tests):
         for j in range(0, n_calc):
-            values = sf.tested_distr(sf.distrs[k]).rvs(size=sizes[i])
+            values = distr['stat'].rvs(size=sizes[i])
             values = np.sort(values)
 
             average_data[j] = param.average(values)
