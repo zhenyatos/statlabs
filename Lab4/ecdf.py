@@ -2,7 +2,6 @@ import Lab4
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 class ECDF:
     data = []
 
@@ -17,6 +16,8 @@ class ECDF:
 
 np.random.seed(1)
 n_plots = len(Lab4.sizes)
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
 for param in Lab4.params:
     plt.subplots(n_plots)
     for k in range(0, n_plots):
@@ -34,6 +35,5 @@ for param in Lab4.params:
         plt.plot(x, y, color='royalblue')
         plt.plot(x, y_cdf, color='blue')
         plt.title('n = ' + str(Lab4.sizes[k]))
-
+    plt.tight_layout(pad=1.0)
     plt.savefig("..\Documentation\Lab4\ecdf\\" + param['name'] + ".png")
-    plt.show()
