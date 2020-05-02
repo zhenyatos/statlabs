@@ -10,3 +10,4 @@
 Lab2/__pycache__/parameters.cpython-37.pyc
 stuff/__pycache__/__init__.cpython-37.pyc
 stuff/__init__.py
+*.pyc
