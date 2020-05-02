@@ -1,6 +1,5 @@
 import Lab4
 import matplotlib.pyplot as plt
-import scipy.stats as st
 import numpy as np
 
 
@@ -16,6 +15,7 @@ class ECDF:
         return count.size / self.data.size
 
 
+np.random.seed(1)
 n_plots = len(Lab4.sizes)
 for param in Lab4.params:
     plt.subplots(n_plots)
@@ -35,5 +35,5 @@ for param in Lab4.params:
         plt.plot(x, y_cdf, color='blue')
         plt.title('n = ' + str(Lab4.sizes[k]))
 
-    plt.savefig("..\Documentation\Lab4\\" + param['name'] + ".png")
+    plt.savefig("..\Documentation\Lab4\ecdf\\" + param['name'] + ".png")
     plt.show()
