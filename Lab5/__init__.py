@@ -1,5 +1,4 @@
 from scipy import stats
-from matplotlib import pyplot as plt
 import numpy as np
 
 
@@ -43,29 +42,33 @@ class Mixed:
 params = [
     {
         'name': "rho=0.0",
+        'meanX': 0, 'meanY': 0,
+        'sigmaX': 1, 'sigmaY': 1,
+        'rho': 0,
         'distr': get_2d_normal(0, 0, 1, 1, 0)
     },
     {
         'name': "rho=0.5",
+        'meanX': 0, 'meanY': 0,
+        'sigmaX': 1, 'sigmaY': 1,
+        'rho': 0.5,
         'distr': get_2d_normal(0, 0, 1, 1, 0.5)
     },
     {
         'name': "rho=0.9",
+        'meanX': 0, 'meanY': 0,
+        'sigmaX': 1, 'sigmaY': 1,
+        'rho': 0.9,
         'distr': get_2d_normal(0, 0, 1, 1, 0.9)
     },
     {
         'name': "mix",
-        'distr': Mixed([get_2d_normal(0, 0, 1, 1, 0),
-                        get_2d_normal(5, 5, 1, 1, 0)],
-                       [0.5, 0.5], 2)
+        'distr': Mixed([get_2d_normal(0, 0, 1, 1, 0.9),
+                        get_2d_normal(0, 0, 1, 1, -0.9)],
+                       [0.9, 0.1], 2)
     }
 ]
 
 if __name__ == "__main__":
-    for param in params:
-        distr = param['distr']
-        points = distr.rvs(size=100)
-        px = points[:, 0]
-        py = points[:, 1]
-        plt.scatter(px, py)
-        plt.show()
+    exec(open("calc.py").read())
+    exec(open("ellipse.py").read())
