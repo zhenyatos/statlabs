@@ -33,10 +33,11 @@ for param in Lab5.params:
         samples = param['distr'].rvs(size=size)
         plt.scatter(samples[:, 0], samples[:, 1])
 
-        x = np.linspace(-4, 4, 100)
-        y = np.linspace(-4, 4, 100)
+        x = np.linspace(min(samples[:, 0]) - 2, max(samples[:, 0]) + 2, 100)
+        y = np.linspace(min(samples[:, 1]) - 2, max(samples[:, 1]) + 2, 100)
         x, y = np.meshgrid(x, y)
         z = ellipse.z(x, y)
         plt.contour(x, y, z, [ellipse.rad2(samples)])
 
-        plt.show()
+        plt.savefig("..\Documentation\Lab5\ellipse\\" + param['name'] + ", " + "n = " + str(size) + ".png")
+        plt.close()

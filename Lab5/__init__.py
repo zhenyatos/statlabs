@@ -41,21 +41,21 @@ class Mixed:
 
 params = [
     {
-        'name': "rho=0.0",
+        'name': "rho = 0.0",
         'meanX': 0, 'meanY': 0,
         'sigmaX': 1, 'sigmaY': 1,
         'rho': 0,
         'distr': get_2d_normal(0, 0, 1, 1, 0)
     },
     {
-        'name': "rho=0.5",
+        'name': "rho = 0.5",
         'meanX': 0, 'meanY': 0,
         'sigmaX': 1, 'sigmaY': 1,
         'rho': 0.5,
         'distr': get_2d_normal(0, 0, 1, 1, 0.5)
     },
     {
-        'name': "rho=0.9",
+        'name': "rho = 0.9",
         'meanX': 0, 'meanY': 0,
         'sigmaX': 1, 'sigmaY': 1,
         'rho': 0.9,
