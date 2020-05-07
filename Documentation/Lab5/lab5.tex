@@ -1,0 +1,295 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{systeme}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[bottom]{footmisc}
+\DeclareMathOperator{\med}{med}
+\DeclareMathOperator{\sign}{sign}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}		
+		\vfill	
+		Санкт-Петербургский политехнический университет \\
+		Петра Великого\\
+		\vskip 1cm
+		Институт прикладной математики и механики \\
+		Кафедра «Прикладная математика»
+		\vfill
+		\textbf{Отчёт\\
+			по лабораторной работе №5\\
+			по дисциплине\\
+			«Математическая статистика»\\}
+		\vfill
+	\end{center}
+	\vfill
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		Выполнил студент:\\
+		Самутичев Евгений Романович\\
+		группа: 3630102/70201\\
+	\end{minipage}
+	\vfill
+	\hfill 
+	\begin{minipage}{0.4\textwidth}
+		Проверил:\\
+		к.ф.-м.н., доцент\\
+		Баженов Александр Николаевич\
+	\end{minipage}
+	\vfill
+	\begin{center}
+		Санкт-Петербург\\2020 г.
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\pagebreak
+
+\section{Постановка задачи}
+Сгенерировать двумерные выборки размера $20, 60, 100$ для нормального двумерного распределения $N(x, y, 0, 0, 1, 1, \rho)$.
+Коэффициент корреляции $\rho$ взять равным $0, 0.5, 0.9$
+Каждая выборка генерируется 1000 раз и для неё вычисляются: среднее значение, среднее значение квадрата и дисперсия коэффициентов
+корреляции Пирсона, Спирмена и квадрантного коэффициента корреляции.
+
+Повторить все вычисления для смеси нормальных распределений:
+$$f(x,y) = 0.9\cdot N(x, y, 0, 0, 1, 1, 0.9) + 0.1\cdot N(x, y, 0, 0, 10, 10, -0.9)$$.
+Изобразить сгенерированные точки на плоскости и нарисовать эллипс
+равновероятности.
+\pagebreak
+
+\section{Теория}
+\subsection{Двумерное нормальное распределение}
+Двумерная случайная величина $(X,Y)$ называется \textit{распределенной нормально} (или просто \textit{нормальной}) если её плотность вероятности определена формулой
+
+\begin{equation}
+\resizebox{.9\hsize}{!}{$
+	N(x, y, m_1, m_2, \sigma_1, \sigma_2, \rho) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}
+	\exp{
+		\left(-\frac{1}{2(1-\rho^2)} 
+		\left[\frac{(x - m_1)^2}{\sigma_1^2} -
+		2\rho\frac{(x - m_1)(y - m_2)}{\sigma_1\sigma_2} +
+		\frac{(y - m_2)^2}{\sigma_2^2}\right]\right)
+	}$}\label{eq:1}
+\end{equation}
+
+Можно показать \cite[стр. 133-134]{verrazdely} что компоненты $X,Y$ двумерной нормальной случайной величины также распределены нормально с математическими ожиданиями $m_X = m_1, m_Y = m_2$ и среднеквадратическими отклонениями $\sigma_X = \sigma_1, \sigma_Y = \sigma_2$. В свою очередь параметр $\rho$ - называют \textit{коэффициентом корреляции}. Его значение будет раскрыто далее.
+
+\subsection{Ковариация и коэффициент корреляции}
+\textit{Ковариацией} двух случайных величин $X$ и $Y$ называется величина:
+\begin{equation}
+	K_{XY} = \textbf{M} \left[ (X-m_X)(Y-m_Y) \right]
+\end{equation}
+В свою очередь \textit{коэффициентом корреляции} называется
+\begin{equation}
+	\rho_{XY} = \frac{K_{XY}}{\sigma_X \sigma_Y}
+\end{equation}
+
+Коэффициент корреляции характеризует зависимость между случайными величинами $X$ и $Y$. Именно его мы задаем в двумерном нормальном распределении как $\rho$. Если случайные величины$X$ и $Y$  независимы, то $\rho_{XY} = 0$ т.к. в этом случае очевидно $K_{XY} = 0$.
+
+\subsection{Выборочные коэффициенты корреляции}
+\subsubsection{Пирсона}
+Пусть по выборке значений $\{x_i, y_i\}_{i=1}^n$ двумерной случайной величины $(X,Y)$. Естественной оценкой для $\rho_{XY}$ служит \textit{выборочный коэффициент корреляции (Пирсона)}:
+\begin{equation}
+	r = \frac{\frac{1}{n} \sum_{i=1}^{n}{(x_i - \bar{x})(y_i - \bar{y})}}
+	{\sqrt{
+			\frac{1}{n} \sum_{i=1}^{n}{(x_i-\bar{x})^2}
+			\frac{1}{n} \sum_{i=1}^{n}{(y_i-\bar{y})^2}}}
+\end{equation}
+Важным для приложений свойством является то что при данной оценке гипотеза $\rho_{XY} \neq 0$ (о наличии зависимости между случайными) величинами может быть принята на уровне значимости $0.05$ если выполнено: 
+\begin{equation}\label{eq:5}
+	|r|\sqrt{n-1} > 2.5
+\end{equation}
+это можно найти к примеру в \cite[стр. 538]{verrazdely}
+
+\subsubsection{Квадрантный}
+\textit{Выборочным квадрантным коэффициентом корреляции} называется величина:
+\begin{equation}\label{eq:6}
+	r_Q = \frac{(n_1 + n_3) - (n_2 + n_4)}{n}
+\end{equation}
+, где $n_1, n_2, n_3, n_4$ - количества элементов выборки попавших соответственно в I, II, III и IV квадранты декартовой системы координат с центром в $(\med{x}, \med{y})$ и осями \\
+$x_1 = x - \med{x}, y_1 = y - \med{y}$, где $\med$ - выборочная медиана.
+
+Формулу (\ref{eq:6}) можно переписать эквивалентным образом:
+\begin{equation}
+	r_Q = \frac{1}{n}\sum_{i=1}^{n}{\sign(x_i -\med{x})\sign(y_i -\med{y})}
+\end{equation}
+Важным свойством этой оценки является робастность. Её мы можем проверить используя схему засорения (смесь нормальных распределений).
+
+\subsubsection{Спирмена}
+На практике нередко требуется оценить степень взаимодействия между качественными признаками изучаемого объекта. Качественным называется признак, который нельзя измерить точно, но который позволяет сравнивать изучаемые объекты между собой и располагать их в порядке убывания или
+возрастания их качества. Для этого объекты выстраиваются в определённом порядке в соответствии с рассматриваемым признаком. Процесс упорядочения называется ранжированием, и каждому члену упорядоченной последовательности объектов присваивается ранг, или порядковый номер. \\
+
+Например, объекту с наименьшим значением признака присваивается ранг 1, следующему за ним объекту — ранг 2, и т.д. Таким образом, происходит сравнение каждого объекта со всеми объектами изучаемой выборки. Если объект обладает не одним, а двумя качественными признаками — переменными $X$ и $Y$, то для исследования их взаимосвязи используют выборочный коэффициент корреляции между двумя последовательностями рангов этих признаков. \\
+
+Обозначим ранги, соотвествующие значениям переменной $X$, через $u$, а ранги, соотвествующие значениям переменной $Y$ - через $v$. \textit{Выборочный коэффициент ранговой корреляции Спирмена} определяется как выборочный коэффициент корреляции Пирсона между рангами $u$, $v$ переменных $X, Y$:
+\begin{equation}
+	r_S = \frac
+			{\frac{1}{n} \sum_{i=1}^{n}{(u_i - \bar{u})(v_i - \bar{v})}}
+			{\sqrt{\frac{1}{n} \sum_{i=1}^{n}{(u_i-\bar{u})^2}
+					\frac{1}{n} \sum_{i=1}^{n}{(v_i-\bar{v})^2}}}
+\end{equation}
+
+\subsection{Эллипс равновероятности}
+Рассмотрим выражение для плотности двумерного нормального распределения (\ref{eq:1}) несколько подробнее, а именно найдем линии уровня или что равносильно проекции сечения графика плотности плоскостями параллельными $xOy$ на плоскость $xOy$:
+$$N(x, y, m_1, m_2, \sigma_1, \sigma_2, \rho) = const$$
+, или что равносильно:
+\begin{equation}
+	\frac{(x - m_1)^2}{\sigma_1^2} - 2\rho\frac{(x - m_1)(y - m_2)}{\sigma_1\sigma_2} + \frac{(y - m_2)^2}{\sigma_2^2} = const
+\end{equation}
+
+Во всех точках каждого из таких эллипсов плотность двумерного нормального распределения $N(x, y, m_1, m_2, \sigma_1, \sigma_2, \rho)$ постоянна. Поэтому они и называются \textit{эллипсами равновероятности}\cite[стр. 44-45]{ventzel}. Отметим что в предельном случае $\rho = 1$:
+$$\left(\frac{x-m_1}{\sigma_1} - \frac{y-m_2}{\sigma_2}\right)^2 = const$$
+, такое уравнение задает семейство прямых паралелельных прямой:
+\begin{equation}\label{eq:10}
+	\frac{x-m_1}{\sigma_1} = \frac{y-m_2}{\sigma_2}
+\end{equation}
+Аналогично рассматривается предельный случай $\rho = -1$.
+\pagebreak
+
+\section{Реализация}
+\label{sec:impl}
+Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
+
+\begin{itemize}
+	\item \textbf{NumPy} - векторизация вычислений, работа с массивами данных, включая вычисление среднего и дисперсии
+	\item \textbf{SciPy} - модуль \textbf{stats} для генерации данных по распределениям, вычисления коэффициентов корелляции
+	\item \textbf{Matplotlib} - построение эллипсов рассеяния
+\end{itemize}
+
+Исходный код работы приведен в приложении. 
+\pagebreak
+
+\section{Результаты}
+\subsection{Коэффициенты корреляции}
+\begin{table}[h!]
+	\centering
+	\input{tables/rho = 0.0.tex}
+	\caption{$\rho = 0$}
+\end{table}
+\begin{table}[h!]
+	\centering
+	\input{tables/rho = 0.5.tex}
+	\caption{$\rho = 0.5$}
+\end{table}
+\pagebreak
+
+\begin{table}[h!]
+	\centering
+	\input{tables/rho = 0.9.tex}
+	\caption{$\rho = 0.9$}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\input{tables/mix.tex}
+	\caption{Смесь нормальных распределений}
+\end{table}
+\pagebreak
+
+\subsection{Эллипсы равновероятности}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.0, n = 20}
+	\caption{$\rho = 0.0, n = 20$}
+	\label{fig:image1}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.0, n = 60}
+	\caption{$\rho = 0.0, n = 60$}
+	\label{fig:image2}
+\end{figure}
+\pagebreak
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.0, n = 100}
+	\caption{$\rho = 0.0, n = 100$}
+	\label{fig:image3}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.5, n = 20}
+	\caption{$\rho = 0.5, n = 20$}
+	\label{fig:image4}
+\end{figure}
+\pagebreak
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.5, n = 60}
+	\caption{$\rho = 0.5, n = 60$}
+	\label{fig:image5}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.5, n = 100}
+	\caption{$\rho = 0.5, n = 100$}
+	\label{fig:image6}
+\end{figure}
+\pagebreak
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.9, n = 20}
+	\caption{$\rho = 0.9, n = 20$}
+	\label{fig:image7}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.9, n = 60}
+	\caption{$\rho = 0.9, n = 60$}
+	\label{fig:image8}
+\end{figure}
+\pagebreak
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{ellipse/rho = 0.9, n = 100}
+	\caption{$\rho = 0.9, n = 100$}
+	\label{fig:image9}
+\end{figure}
+\pagebreak
+
+\section{Обсуждение}
+\subsection{Коэффициенты корреляции}
+Для начала воспользуемся (\ref{eq:5}) для анализа экспериментов по которым были получены таблицы 1, 2. Выясним можно ли принять гипотезу о зависимости между случайными величинами на уровне значимости $\alpha = 0.05$ для $n = 100$ по коэффициенту Пирсона.
+$$0 \sqrt{100 - 1} \leq 2.5, 4.98 \approx 0.5 \sqrt{100 - 1} > \cdot 2.5$$ 
+В эксперименте 1 эту гипотезу принять нельзя, а в эксперименте 2 можно. При этом в эксперименте 1 с.в. заведомо независимы, а в эксперименте 2 зависимы, так что все согласуется с теорией. 
+
+Из таблиц 1, 2 и 3 видно что $r, r_S$ являются состоятельными оценками $\rho_{XY}$ т.к. они все ближе к нему с ростом $n$.
+
+Из таблицы 4 видим что $r_Q$ устойчивая к выбросам (робастная) оценка. Квадрантный коэффициент корреляции показывает лучшие результаты в устойчивости.
+
+\subsection{Эллипсы равновероятности}
+Видно что чем ближе $\rho$ к 1, тем эллипс равновероятности становится все больше похож на прямую, заданную как (\ref{eq:10}). Т.е. наглядно показано как между с.в. $X$ и $Y$ возникает линейная зависимость.
+\pagebreak
+
+\section{Приложения}
+\noindent 1. Исходный код лабораторной {\url{https://github.com/zhenyatos/statlabs/tree/master/Lab5}}
+
+\begin{thebibliography}{9} 
+	\bibitem{verrazdely} \textbf{Вероятностные разделы математики.} Учебник для бакалавров технических направлений. // Под ред. Максимова Ю.Д. - СПб <<Иван Федоров>>, 2001. - 592 с., илл
+	
+	\bibitem{ventzel} Вентцель Е.С. \textit{Теория вероятностей: Учеб. для вузов.} — 6-е изд. стер. — М.: Высш. шк., 1999.— 576 c.
+\end{thebibliography}
+
+\end{document}

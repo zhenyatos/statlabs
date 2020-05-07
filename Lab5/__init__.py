@@ -64,7 +64,7 @@ params = [
     {
         'name': "mix",
         'distr': Mixed([get_2d_normal(0, 0, 1, 1, 0.9),
-                        get_2d_normal(0, 0, 1, 1, -0.9)],
+                        get_2d_normal(0, 0, 10, 10, -0.9)],
                        [0.9, 0.1], 2)
     }
 ]
