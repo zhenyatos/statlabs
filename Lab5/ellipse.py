@@ -33,6 +33,7 @@ for param in Lab5.params:
         samples = param['distr'].rvs(size=size)
         plt.scatter(samples[:, 0], samples[:, 1])
 
+        plt.title("R = " + str(round(ellipse.rad2(samples), 6)))
         x = np.linspace(min(samples[:, 0]) - 2, max(samples[:, 0]) + 2, 100)
         y = np.linspace(min(samples[:, 1]) - 2, max(samples[:, 1]) + 2, 100)
         x, y = np.meshgrid(x, y)

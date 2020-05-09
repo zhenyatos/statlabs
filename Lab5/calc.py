@@ -12,18 +12,10 @@ def correct_digits(vrnc):
 def quadrantr(samples):
     x = samples[:, 0]
     y = samples[:, 1]
-    mx = np.mean(x)
-    my = np.mean(y)
+    mx = np.median(x)
+    my = np.median(y)
 
-    x_l = samples[x < mx]
-    x_r = samples[x >= mx]
-
-    q1 = x_r[x_r[:, 1] >= my]
-    q2 = x_l[x_l[:, 1] >= my]
-    q3 = x_l[x_l[:, 1] < my]
-    q4 = x_r[x_r[:, 1] < my]
-    return (len(q1) + len(q3) - len(q2) - len(q4)) / len(samples)
-
+    return np.mean(np.sign(x - mx) * np.sign(y - my))
 
 sizes = [20, 60, 100]
 n_times = 1000
