@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{systeme}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[bottom]{footmisc}
+\DeclareMathOperator{\med}{med}
+\DeclareMathOperator{\sign}{sign}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}		
+		\vfill	
+		Санкт-Петербургский политехнический университет \\
+		Петра Великого\\
+		\vskip 1cm
+		Институт прикладной математики и механики \\
+		Кафедра «Прикладная математика»
+		\vfill
+		\textbf{Отчёт\\
+			по лабораторной работе №6\\
+			по дисциплине\\
+			«Математическая статистика»\\}
+		\vfill
+	\end{center}
+	\vfill
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		Выполнил студент:\\
+		Самутичев Евгений Романович\\
+		группа: 3630102/70201\\
+	\end{minipage}
+	\vfill
+	\hfill 
+	\begin{minipage}{0.4\textwidth}
+		Проверил:\\
+		к.ф.-м.н., доцент\\
+		Баженов Александр Николаевич\
+	\end{minipage}
+	\vfill
+	\begin{center}
+		Санкт-Петербург\\2020 г.
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\pagebreak
+
+\section{Постановка задачи}
+Найти оценки коэффициентов $a, b$ линейной регрессии $y_i = a + bx_i + \varepsilon_i$, используя 20 точек на отрезке $[-1.8, 2]$ с равномерным шагом равным 0.2. Ошибку $\varepsilon_i$ считать нормально распределённой с параметрами (0,1). В качестве эталонной зависимости взять $y_i = 2 + 2x_i + e_i$. При построении оценок коэффициентов использовать два критерия: критерий наименьших квадратов и критерий наименьших модулей. Проделать то же самое для выборки, у которой в значения $y_1$ и $y_2$ вносятся
+возмущения 10 и -10.
+\pagebreak
+
+\section{Теория}
+\subsection{Простая линейная регрессия}
+Регрессионную модель описания данных называют \textit{простой линейной регрессией}, если
+\begin{equation}
+	y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+\end{equation}
+, где $\{x_i\}_{i=1}^n$ - значения фактора, $\{y_i\}_{i=1}^n$ - наблюдаемые значения отклика, а $\{\varepsilon_i\}_{i=1}^n$ - независимые, нормально распределенные по закону $N(0, \sigma)$ случайные величины, а $\beta_0, \beta_1$ - оцениваемые параметры\cite[стр. 507]{verrazdely}. Для оценки применяются различные методы, в данной работе рассмотрен следующий подход: вводится критерий рассогласования отклика и регрессионной функции, после чего оценки параметров регресии выводятся из задачи минимизации критерия. Рассмотрим два таких критерия.
+
+\subsubsection{Критерий наименьших квадратов}
+Достаточно простые расчетные формулы для оценок получают при выборе критерия в виде суммы квадратов отклонений значений отклика от значений регрессионной функции:
+\begin{equation}\label{lab6:1}
+	Q\left(\beta_{0}, \beta_{1}\right)=\sum_{i=1}^{n} \varepsilon_i^{2}=\sum_{i=1}^{n}\left(y_{i}-\beta_{0}-\beta_{1} x_{i}\right)^{2} \rightarrow \min _{\beta_{0}, \beta_{1}}
+\end{equation}
+
+Приведем сами расчетные формулы \cite[стр. 509]{verrazdely}:
+\begin{equation}
+	\widehat{\beta}_{1}=\frac{\overline{x y} - \bar{x} \cdot \bar{y}}{\overline{x^2} - (\bar{x})^{2}} \ \ \ \widehat{\beta}_{0}=\bar{y} - \bar{x} \widehat{\beta}_{1}
+\end{equation}
+
+Важным свойством является несмещенность оценки, однако она чувствительна к выбросам и если нужна робастная оценка, то следует рассмотреть следующий критерий.
+
+\subsubsection{Критерий наименьших модулей}
+В отличие от задач метода наименьших квадратов, для этого критерия минимизацию на практике проводят численно, решая:
+\begin{equation}\label{lab6:2}
+	M\left(\beta_{0}, \beta_{1}\right)=\sum_{i=1}^{n}\left|y_{i}-\beta_{0}-\beta_{1} x_{i}\right| \rightarrow \min _{\beta_{0}, \beta_{1}}
+\end{equation}
+
+В данной работе был использован метод Нелдера-Мида \cite{nelder}, применимый к негладким функциям (в том числе к $M\left(\beta_{0}, \beta_{1}\right)$). Подробнее см. \hyperref[sec:impl]{реализация}.
+\pagebreak
+
+\section{Реализация}
+\label{sec:impl}
+Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
+
+\begin{itemize}
+	\item \textbf{NumPy} - векторизация вычислений, работа с массивами данных, вычисление выборочных характеристик
+	\item \textbf{SciPy} - модуль \textbf{stats} для генерации данных по эталонной зависимости, оценок МНК, модуль \textbf{optimize} для метода Нелдера-Мида
+	\item \textbf{Matplotlib} - построение графиков
+\end{itemize}
+
+Исходный код работы приведен в приложении. 
+\pagebreak
+
+\section{Результаты}
+\subsection{Выборка без выбросов}
+\begin{itemize}
+	\item Критерий наименьших квадратов:
+	$$\widehat{\beta}_0 = 2.47 \ \ \widehat{\beta}_1 = 1.95 \ \ Q\eqref{lab6:1} = 13.9637  \ \ M\eqref{lab6:2} = 13.9182$$
+	\item Критерий наименьших модулей:
+	$$\widehat{\beta}_0 = 2.49 \ \ \widehat{\beta}_1 = 1.68 \ \ Q = 15.9356 \ \ M = 13.3737$$
+\end{itemize}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{simple}
+	\caption{Без выбросов}
+	\label{fig:image1}
+\end{figure}
+
+\pagebreak
+\subsection{Выборка с выбросами}
+\begin{itemize}
+	\item Критерий наименьших квадратов:
+	$$\widehat{\beta}_0 = 2.61 \ \ \widehat{\beta}_1 = 0.52 \ \ Q  = 154.2302  \ \ M = 37.381$$
+	\item Критерий наименьших модулей:
+	$$\widehat{\beta}_0 = 2.67 \ \ \widehat{\beta}_1 = 1.35 \ \ Q = 172.7536 \ \ M = 29.9906$$
+\end{itemize}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.8]{robust}
+	\caption{С выбросами}
+	\label{fig:image2}
+\end{figure}
+\pagebreak
+
+\section{Обсуждение}
+Из графиков видно, что оценка по критерию наименьших модулей значительно лучше приближает эталонную зависимость при наличии выбросов и это согласуется с теорией т.к. она является робастной. В тоже время, критерий наименьших квадратов дает более точное приближение в отсутствие выбросов и, к тому же, проще для вычислений. Полученные значения $M, Q$ упорядочены как и ожидалось, для оценки МНК значение $Q$ меньше, чем для любой другой, аналогично для оценки МНМ и значения $M$ 
+\pagebreak
+
+\section{Приложения}
+\noindent 1. Исходный код лабораторной {\url{https://github.com/zhenyatos/statlabs/tree/master/Lab6}}
+
+\begin{thebibliography}{9} 
+	\bibitem{verrazdely} \textbf{Вероятностные разделы математики.} Учебник для бакалавров технических направлений. // Под ред. Максимова Ю.Д. - СПб <<Иван Федоров>>, 2001. - 592 с., илл
+	
+	\bibitem{nelder} Метод Нелдера — Мида // Википедия. [2019—2019]. Дата обновления: 11.09.2019. URL: https://ru.wikipedia.org/?oldid=102111276 (дата обращения: 11.09.2019).
+\end{thebibliography}
+
+\end{document}

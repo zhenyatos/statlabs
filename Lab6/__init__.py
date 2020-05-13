@@ -49,12 +49,12 @@ if __name__ == "__main__":
         print(d['name'])
         print("lstsqr:", "a =", round(lstsq_a, 2),
               "b =", round(lstsq_b, 2),
-              "Q =", np.round(np.sum(np.square(y0 - (lstsq_a + lstsq_b * x))), 4),
-              "M =", np.round(np.sum(np.abs(y0 - (lstsq_a + lstsq_b * x))), 4))
+              "Q =", np.round(np.sum(np.square(y - (lstsq_a + lstsq_b * x))), 4),
+              "M =", np.round(np.sum(np.abs(y - (lstsq_a + lstsq_b * x))), 4))
         print("lstmod:", "a =", round(lstmod_a, 2),
               "b =", round(lstmod_b, 2),
-              "Q =", np.round(np.sum(np.square(y0 - (lstmod_a + lstmod_b * x))), 4),
-              "M =", np.round(np.sum(np.abs(y0 - (lstmod_a + lstmod_b * x))), 4))
+              "Q =", np.round(np.sum(np.square(y - (lstmod_a + lstmod_b * x))), 4),
+              "M =", np.round(np.sum(np.abs(y - (lstmod_a + lstmod_b * x))), 4))
         print(" ")
 
         plt.plot(x, y0, 'navy', label="Модель")
