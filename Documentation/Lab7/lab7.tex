@@ -1,0 +1,176 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{systeme}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[bottom]{footmisc}
+\DeclareMathOperator{\med}{med}
+\DeclareMathOperator{\sign}{sign}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}		
+		\vfill	
+		Санкт-Петербургский политехнический университет \\
+		Петра Великого\\
+		\vskip 1cm
+		Институт прикладной математики и механики \\
+		Кафедра «Прикладная математика»
+		\vfill
+		\textbf{Отчёт\\
+			по лабораторной работе №7\\
+			по дисциплине\\
+			«Математическая статистика»\\}
+		\vfill
+	\end{center}
+	\vfill
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		Выполнил студент:\\
+		Самутичев Евгений Романович\\
+		группа: 3630102/70201\\
+	\end{minipage}
+	\vfill
+	\hfill 
+	\begin{minipage}{0.4\textwidth}
+		Проверил:\\
+		к.ф.-м.н., доцент\\
+		Баженов Александр Николаевич\
+	\end{minipage}
+	\vfill
+	\begin{center}
+		Санкт-Петербург\\2020 г.
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\pagebreak
+
+\section{Постановка задачи}
+Сгенерировать выборку объёмом 100 элементов для нормального распределения $N(0, 1)$. По сгенерированной выборке оценить параметры $\mu$ и $\sigma$ нормального закона методом максимального правдоподобия. В качестве основной гипотезы $H_0$ будем считать, что сгенерированное распределение имеет вид $N(\widehat{\mu}, \widehat{\sigma})$. Проверить основную гипотезу, используя критерий согласия $\chi^2$. В качестве уровня значимости взять $\alpha = 0.05$. Привести таблицу вычислений $\chi^2$.
+\pagebreak
+
+\section{Теория}
+\subsection{Точечное оценивание}
+\subsubsection{Основные понятия}
+Пусть имеется выборка $\{x_i\}_{i=1}^n$ из генеральной совокупности с плотностью распределения $f(x,\theta)$. Предполагается что функциональный вид зависимости задан с точностью до неизвестного параметра $\theta$. Требуется по выборке наблюдений $\{x_i\}_{i=1}^n$ определить число $\widehat{\theta}_n$ которое можно принять за значение параметра $\theta$. \textit{Точечной оценкой} неизвестного параметра $\theta$ распределения называется борелевская функция наблюдений $\widehat{\theta}_n = \widehat{\theta}_n(x_1, ..., x_n)$, приближенно равная $\theta$. Следует заметить что параметр может быть векторным, к примеру $\theta = (\mu, \sigma)$ для нормального распределения.
+
+\subsubsection{Метод максимального правдоподобия}
+Рассмотрим один общий метод построения точечных оценок. Для начала введем важное понятие, \textit{функцией правдоподобия} (ФП) называется совместная плотность вероятности распределения $n$ независимых с.в. $x_1, ..., x_n$:
+\begin{equation}
+	L\left(x_{1}, \ldots, x_{n}, \theta\right)=f\left(x_{1}, \theta\right) f\left(x_{2}, \theta\right) \ldots f\left(x_{n}, \theta\right)
+\end{equation}
+
+Оценкой максимального правдоподобия (о. м. п.) будем называть такое значение $\widehat{\theta}_{\text{мп}}$ из множества допустимых значений параметра $\theta$, для которого ФП принимает наибольшее значение при заданных $x_1, ..., x_n$:
+\begin{equation}
+	\widehat{\theta}_{\text{мп}}=\arg \max _{\theta} L\left(x_{1}, \ldots, x_{n}, \theta\right)
+\end{equation}
+
+Легко обобщается на случай векторного параметра $\theta = (\theta_1, ..., \theta_m)$:
+\begin{equation}
+	\widehat{\theta}_{\text{мп}}=\arg \max _{\theta_1, ..., \theta_m} L\left(x_{1}, \ldots, x_{n}, \theta_1, ..., \theta_m\right)
+\end{equation}
+
+Известно \cite[стр. 444]{verrazdely} что о. м. п. нормального распределения являются выборочное среднее и выборочная дисперсия:
+\begin{equation}
+	\widehat{\mu}_{\text{мп}} = \bar{x} \ \ \ \widehat{\sigma}_{\text{мп}} = \sqrt{s^2}
+\end{equation}
+
+\subsection{Критерий согласия $\chi^2$}
+Для проверки гипотезы о законе распределения применяются различные критерии согласия. В данный работе рассматривается наиболее обоснованный и наиболее часто используемый в практике - критерий $\chi^2$ \cite[стр. 482]{verrazdely}. И так, выдвинута гипотеза $H_0$ о генеральном законе распределения с функцией распределения $F(x)$. Под конкурирующей гипотезой $H_1$ понимается гипотеза о справедливости одного из конкурирующих распределений.
+
+Разобьем множество значений изучаемой случайной величины $X$ на $k$ непересекающихся подмножеств $\Delta_1, ..., \Delta_k$ и пусть $p_i = \textbf{P}(X \in \Delta_k)$. Если множество значений представляет вещественную ось, то подмножества имеют вид:
+
+\begin{equation} 
+	\Delta_i = (a_{i-1}, a_i], i = 2, ...,k-1 \ \ \Delta_1 = (-\infty, a_1] \ \ \Delta_k = (a_{k-1}, +\infty)
+\end{equation}
+
+Пусть $n_1, ..., n_k$ - частоты попадания выборочных элементов в подмножества $\Delta_1, ..., \Delta_k$ соответственно. В случае справедливости гипотезы относительные частоты $\frac{n_i}{n}$ должны быть близки к $p_i$ при $i = 1, ..., k$. Поэтому за меру отклонения было предолжено (К. Пирсоном) \cite[стр. 483]{verrazdely} выбрать значение 
+\begin{equation}
+	\chi^2_{B} = \sum_{i=1}^{k} \frac{n}{p_{i}}\left(\frac{n_{i}}{n}-p_{i}\right)^{2}=\sum_{i=1}^{k} \frac{\left(n_{i} - n p_{i}\right)^{2}}{n p_{i}}
+\end{equation}
+
+Существует \textbf{теорема}: \textit{статистика критерия $\chi^2$ асимптотически распределена по закону $\chi^2$ с $k-1$ степенями свободы}. На основе этой теоремы формируется правило проверки гипотезы о законе распределения по методу $\chi^2$: можно принять гипотезу $H_0$ на уровне значимости $\alpha$ если $\chi^2_{B} < \chi^2_{1-\alpha}$, в противном случае она отвергается.
+
+В данной работе $k$ и длины $\Delta_1, ..., \Delta_k$ выбирались по правилам, которые обычно используют при построении гистограмм\cite{histogram}. Правило Райса для числа интервалов:
+\begin{equation}
+	k = \lceil \ 1.72\sqrt[3]{n} \ \rceil 
+\end{equation}
+и правило Фридмена-Дайсона для ширины (считаем все интервалы кроме крайних одинаковой ширины)
+\begin{equation}
+	a_i = \med{N(\widehat{\mu}, \widehat{\sigma})} + \left(i - \frac{k-1}{2}\right) h, \text{где } h = 2 \frac{\text{IQR} (x_1, ..., x_n)}{\sqrt[3]{n}}, i = 2, ..., k-1
+\end{equation}
+, где $\text{IQR}(x_1, ..., x_n)$ - выборочная интерквартильная широта, $\med{N(\widehat{\mu}, \widehat{\sigma})}$ - медиана гипотетического распределения (т.к. предполагается что именно в окрестности медианы будет большая часть элементов выборки).
+\pagebreak
+
+\section{Реализация}
+\label{sec:impl}
+Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
+
+\begin{itemize}
+	\item \textbf{NumPy} - векторизация вычислений, работа с массивами данных, вычисление выборочных характеристик
+	\item \textbf{SciPy} - модуль \textbf{stats} для генерации данных, работы с распределениями, оценки методом максимального правдоподобия
+\end{itemize}
+
+Исходный код работы приведен в \hyperref[sec:appl]{приложении}. 
+\pagebreak
+
+\section{Результаты}
+Оценки: 
+\begin{equation}\label{lab7:1}
+	\widehat{\mu} = 0.03 \ \ \widehat{\sigma} = 1.01
+\end{equation}
+Число промежутков: $k = \lceil \ 1.72 \cdot \sqrt[3]{100} \ \rceil = 8$ \\ 
+
+Таблица вычислений $\chi^2$:
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		$i$&$\Delta_i$		&$n_i$&$p_i$	&$n_i - np_i$  \\ \hline
+		1&$(-\infty, -1.79]$&2    &0.0366  	&-1.6609  	\\ \hline
+		2&$(-1.79, -1.27]$	&7    &0.0637	&0.627  	\\ \hline
+		3&$(-1.27, -0.75]$	&12   &0.121	&-0.0972  	\\ \hline
+		4&$(-0.75, -0.23]$	&22   &0.1777	&4.2306  	\\ \hline
+		5&$(-0.23, 0.29]$	&22   &0.202	&1.8009    \\ \hline
+		6&$(0.29, 0.81]$	&15   &0.1777	&-2.7694	\\ \hline
+		7&$(0.81, 1.33]$	&8    &0.121   &-4.0972  	\\ \hline
+		8&$(1.33, +\infty)$	&12   &0.1003	&1.9661  	\\ \hline
+	\end{tabular}
+	\caption{Таблица вычислений $\chi^2$}
+\end{table}
+
+При $\alpha = 0.05: \ \chi^2_{1-\alpha}(k-1) \approx 14.0671$, а вычисленное $\chi^2_{\text{B}} = 4.1883$, видно что \\ $\chi^2_{\text{B}} < \chi^2_{1-\alpha}(k-1)$
+\pagebreak
+
+\section{Обсуждение}
+Согласно результатам эксперимента, заданное по оценкам \eqref{lab7:1} распределение $N(\widehat{\mu}, \widehat{\sigma})$ является генеральным законом по которому построена выборка с уровнем значимости $0.05$. Теоретически это обосновывается тем что оценки максимального правдоподобия состоятельны.
+\pagebreak
+
+\section{Приложения}\label{sec:appl}
+\noindent 1. Исходный код лабораторной {\url{https://github.com/zhenyatos/statlabs/tree/master/Lab7}}
+
+\begin{thebibliography}{9} 
+	\bibitem{verrazdely} \textbf{Вероятностные разделы математики.} Учебник для бакалавров технических направлений. // Под ред. Максимова Ю.Д. - СПб <<Иван Федоров>>, 2001. - 592 с., илл
+	
+	\bibitem{histogram} Wikipedia contributors. (2020, March 19). Histogram. In Wikipedia, The Free Encyclopedia. Retrieved 18:27, May 14, 2020, from \url{https://en.wikipedia.org/w/index.php?title=Histogram&oldid=946321806}
+\end{thebibliography}
+
+\end{document}
