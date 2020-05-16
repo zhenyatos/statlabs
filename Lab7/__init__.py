@@ -12,9 +12,14 @@ if __name__ == "__main__":
             'data': stats.norm(0, 1).rvs(100)
         },
         {
-            'name': "U(-1, 1) ? N(loc, scale)",
+            'name': "U(-1, 1) ? N(loc, scale) - 20",
             'distr': stats.norm,
             'data': stats.uniform(-1, 2).rvs(20)
+        },
+        {
+            'name': "U(-1, 1) ? N(loc, scale) - 100",
+            'distr': stats.norm,
+            'data': stats.uniform(-1, 2).rvs(100)
         }
     ]
 
@@ -25,8 +30,8 @@ if __name__ == "__main__":
         res = criteria.chi_squared(test['data'], distr, alpha)
         print(test['name'] + ":")
         print("result:", res['result'])
+        print("chi's:", res['chi2'])
         if test['name'] == "N(0, 1) ? N(loc, scale)":
-            print("Chi's:", res['chi2'])
             print("a_i:", res['a_val'])
             print("p_i:", res['p_val'])
             print("n_i:", res['n_val'])
