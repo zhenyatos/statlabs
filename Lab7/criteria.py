@@ -33,9 +33,9 @@ def chi_squared(x, distr, alpha):
 
     return {
         'result': chi2_1 < chi2_2,
-        'chi2': [chi2_1, chi2_2],
-        'a_val': a,
-        'p_val': p,
+        'chi2': np.round([chi2_1, chi2_2], 4),
+        'a_val': np.round(a, 2),
+        'p_val': np.round(p, 4),
         'n_val': n,
-        'diff': n - N * p
+        'diff': np.round(n - N * p, 4)
     }
