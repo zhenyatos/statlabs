@@ -1,0 +1,149 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{systeme}
+\usepackage{hyperref}
+\usepackage{url}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}		
+		\vfill	
+		Санкт-Петербургский политехнический университет \\
+		Петра Великого\\
+		\vskip 1cm
+		Институт прикладной математики и механики \\
+		Кафедра «Прикладная математика»
+		\vfill
+		\textbf{Курсовая работа\\
+			по дисциплине\\
+			«Математическая статистика»\\}
+		\vfill
+	\end{center}
+	\vfill
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		Выполнил студент:\\
+		Самутичев Евгений Романович\\
+		группа: 3630102/70201\\
+	\end{minipage}
+	\vfill
+	\hfill 
+	\begin{minipage}{0.4\textwidth}
+		Проверил:\\
+		к.ф.-м.н., доцент\\
+		Баженов Александр Николаевич\
+	\end{minipage}
+	\vfill
+	\begin{center}
+		Санкт-Петербург\\2020 г.
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\pagebreak
+
+\section{Постановка задачи}
+По данным выгруженным из .mat файла:
+\begin{itemize}
+	\item Изобразить движение проекции объекта на детектор в течение временного окна 161 с - 162 с (когда наблюдалось вращение)
+	\item Выделить центр масс проекции
+	\item Оценить скорость вращения центра масс
+\end{itemize}
+\pagebreak
+
+\section{Теория}
+\subsection{Оценка центра масс}
+Обрабатываемые данные состоят из матриц интенсивности размера 16 х 16 т.е. мы работаем со значениями интенсивности $c_{ij}, i = 0, ..., 15, j = 0, ..., 15$. Сперва занулим значения интенсивности меньше среднего значения по всей матрице для того чтобы избавиться от сорных данных:
+\begin{equation}
+	\hat{c}_{ij} = 
+	\begin{cases}
+		0 &\text{, если } c_{ij} < \bar{c}  \\
+		c_{ij} &\text{, иначе}
+	\end{cases}
+\end{equation}
+, где $\bar{c}$ - выборочное среднее\cite{verrazdely} по выборке $\{c_{ij}\}_{0 \leq i,j \leq 15}$
+
+Теперь вычислим координаты центра масс (в момент времени $t$ который задает матрицу интенсивности):
+\begin{align}
+\begin{split}
+	x_t &= \sum_{i=0}^{15}{\sum_{j=0}^{15}{j\hat{c}_{ij}}} \\
+	y_t &= \sum_{i=0}^{15}{\sum_{j=0}^{15}{i\hat{c}_{ij}}}
+\end{split}
+\end{align}
+
+\subsection{Оценка скорости вращения}
+Для оценки скорости вращенияво временной промежуток $[t, t + dt]$ (за который имеем две различных матрицы интенсивности) воспользуемся следующей оценкой модуля мгновенной скорости\cite{speed}:
+\begin{equation}
+	v_t = \frac{\|(x_{t+dt}, y_{t+dt}) - (x_t, y_t)\|_2}{dt}
+\end{equation}
+\pagebreak
+
+\section{Реализация}
+Работа выполнена с использованием языка \textbf{Python} в интегрированной среде разработки \textbf{PyCharm}, были задействованы библиотеки:
+
+\begin{itemize}
+	\item \textbf{NumPy} - работа с массивами данных
+	\item \textbf{SciPy} - модуль \textbf{io} для обработки .mat файла 
+	\item \textbf{OpenCV} - генерация видео по изображениям
+	\item \textbf{Matplotlib} - генерация изображений
+\end{itemize}
+\pagebreak
+
+\section{Результаты}
+Приведем несколько изображений с выделением центра масс, полученных в ходе работы:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{1.png}
+	\label{1}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{2.png}
+	\label{2}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{3.png}
+	\label{3}
+\end{figure}
+\pagebreak
+
+\section{Обсуждение}
+В ходе работы были получены оценки для скорости вращения из которых видно что оно неравномерное. Сгенерированное видео можно найти в \hyperref[appl]{Приложении}, по нему можно понять как менялась скорость объекта.
+\pagebreak
+
+\section{Приложения}\label{appl}
+\noindent 1. Исходный код лабораторной {\url{https://github.com/zhenyatos/statlabs/tree/master/Coursework}}
+
+\noindent 2. Видео
+{\url{https://github.com/zhenyatos/statlabs/tree/master/Coursework/video.avi}}
+
+\begin{thebibliography}{9} 
+	\addcontentsline{toc}{section}{Список литературы}
+	
+	\bibitem{verrazdely} \textbf{Вероятностные разделы математики.} Учебник для бакалавров технических направлений. // Под ред. Максимова Ю.Д. - СПб <<Иван Федоров>>, 2001. - 592 с., илл
+	
+	\bibitem{speed} Кинематика точки // Википедия. [2020]. Дата обновления: 01.02.2020. URL: https://ru.wikipedia.org/?oldid=104900931 (дата обращения: 01.02.2020).
+\end{thebibliography}
+
+
+\end{document}
